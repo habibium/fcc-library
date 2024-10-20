@@ -27,7 +27,6 @@ module.exports = function (app) {
         const books = await findBooks();
         return res.json(books);
       } catch (error) {
-        console.error(error());
         return res.json({ error: "Error fetching books" });
       }
     })
@@ -41,7 +40,6 @@ module.exports = function (app) {
         const newBook = await createBook({ title });
         return res.json(newBook);
       } catch (error) {
-        console.error(error());
         return res.json({ error: "Error creating book" });
       }
     })
@@ -51,7 +49,6 @@ module.exports = function (app) {
         await deleteAllBooks();
         return res.send("complete delete successful");
       } catch (error) {
-        console.error({ error });
         return res.json({ error: "Error deleting books" });
       }
     });
@@ -65,7 +62,6 @@ module.exports = function (app) {
         if (!book) throw Error;
         res.json(book);
       } catch (error) {
-        console.error(error());
         res.send("no book exists");
       }
     })
@@ -80,7 +76,6 @@ module.exports = function (app) {
         if (!book) throw Error;
         return res.json(book);
       } catch (error) {
-        console.error(error());
         return res.send("no book exists");
       }
     })
@@ -92,7 +87,6 @@ module.exports = function (app) {
         if (!deletedBook) throw Error;
         return res.send("delete successful");
       } catch (error) {
-        console.error(error());
         return res.send("no book exists");
       }
     });
