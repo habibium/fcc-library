@@ -41,6 +41,8 @@ const insertCommentOnBook = async (_id, comment) =>
 
 const deleteAllBooks = async () => await Book.deleteMany({});
 
+const deleteBookById = async (_id) => await Book.findByIdAndDelete(_id);
+
 module.exports = {
   dbConnect,
   createBook,
@@ -48,4 +50,5 @@ module.exports = {
   findBookById,
   insertCommentOnBook,
   deleteAllBooks,
+  deleteBookById,
 };
