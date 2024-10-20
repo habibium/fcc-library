@@ -203,7 +203,20 @@ suite("Functional Tests", function () {
         });
 
         test("Test POST /api/books/[id] with comment, id not in db", function (done) {
-          //done();
+          const comment =
+            "Test POST /api/books/[id] with comment, id not in db";
+          chai
+            .request(server)
+            .post(`/api/books/${crypto.randomUUID().toString()}`)
+            .type("form")
+            .send({
+              comment,
+            })
+            .end((err, res) => {
+              assert.strictEqual(res.status, 200);
+              assert.strictEqual(res.text, "no book exists");
+              done();
+            });
         });
       }
     );
