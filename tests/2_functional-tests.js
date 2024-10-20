@@ -68,7 +68,16 @@ suite("Functional Tests", function () {
         });
 
         test("Test POST /api/books with no title given", function (done) {
-          //done();
+          chai
+            .request(server)
+            .type("form")
+            .post("/api/books")
+            .send({ title: "" })
+            .end((err, res) => {
+              assert.equal(res.status, 200);
+              assert.equal(res.text, "missing required field title");
+              done();
+            });
         });
       }
     );
