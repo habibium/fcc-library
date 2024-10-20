@@ -8,14 +8,21 @@
 
 "use strict";
 
-const { createBook, insertCommentOnBook } = require("../db");
+const { createBook, insertCommentOnBook, findBooks } = require("../db");
 
 module.exports = function (app) {
   app
     .route("/api/books")
-    .get(function (req, res) {
+    .get(async function (req, res) {
       //response will be array of book objects
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
+      try {
+        const books = await findBooks();
+        res.json(books);
+      } catch (error) {
+        console.log({ error });
+        return res.json({ error: "Error fetching books" });
+      }
     })
 
     .post(async function (req, res) {
