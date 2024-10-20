@@ -10,6 +10,7 @@ const chaiHttp = require("chai-http");
 const chai = require("chai");
 const assert = chai.assert;
 const server = require("../server");
+const { findBooks } = require("../db");
 
 chai.use(chaiHttp);
 
@@ -115,7 +116,29 @@ suite("Functional Tests", function () {
       });
 
       test("Test GET /api/books/[id] with valid id in db", function (done) {
-        //done();
+        findBooks()
+          .then((books) => {
+            if (books.length > 0) {
+              const book = books[0];
+              chai
+                .request(server)
+                .get(`/api/books/${book._id}`)
+                .end((err, res) => {
+                  assert.equal(res.status, 200);
+                  assert.property(res.body, "title");
+                  assert.property(res.body, "_id");
+                  assert.property(res.body, "comments");
+                  assert.isArray(res.body.comments);
+                  assert.strictEqual(res.body._id, book._id);
+                  assert.strictEqual(res.body.title, book.title);
+                  done();
+                });
+            }
+            done();
+          })
+          .catch((error) => {
+            done(error);
+          });
       });
     });
 

@@ -29,4 +29,5 @@ const findBooks = async () => await Book.find({});
 module.exports = {
   dbConnect,
   createBook,
+  findBooks,
 };
