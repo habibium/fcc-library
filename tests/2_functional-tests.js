@@ -134,7 +134,6 @@ suite("Functional Tests", function () {
                   done();
                 });
             }
-            done();
           })
           .catch((error) => {
             done(error);
@@ -174,7 +173,6 @@ suite("Functional Tests", function () {
                     done();
                   });
               }
-              done();
             })
             .catch((e) => done(e));
         });
@@ -235,7 +233,6 @@ suite("Functional Tests", function () {
                 done();
               });
           }
-          done();
         });
       });
 
