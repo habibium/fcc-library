@@ -24,6 +24,8 @@ const Book = mongoose.model("book", BookSchema);
 
 const createBook = async (book) => await Book.create(book);
 
+const findBooks = async () => await Book.find({});
+
 module.exports = {
   dbConnect,
   createBook,
