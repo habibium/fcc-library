@@ -30,6 +30,8 @@ const createBook = async (book) => await Book.create(book);
 
 const findBooks = async () => await Book.find({});
 
+const findBookById = async (_id) => await Book.findById(_id);
+
 const insertCommentOnBook = async (_id, comment) =>
   await Book.findOneAndUpdate(
     { _id },
@@ -41,5 +43,6 @@ module.exports = {
   dbConnect,
   createBook,
   findBooks,
+  findBookById,
   insertCommentOnBook,
 };
