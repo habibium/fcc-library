@@ -223,7 +223,20 @@ suite("Functional Tests", function () {
 
     suite("DELETE /api/books/[id] => delete book object id", function () {
       test("Test DELETE /api/books/[id] with valid id in db", function (done) {
-        //done();
+        findBooks().then((books) => {
+          if (books.length > 0) {
+            const book = books[0].toObject();
+            chai
+              .request(server)
+              .delete(`/api/books/${book._id}`)
+              .end((err, res) => {
+                assert.strictEqual(res.status, 200);
+                assert.strictEqual(res.text, "delete successful");
+                done();
+              });
+          }
+          done();
+        });
       });
 
       test("Test DELETE /api/books/[id] with  id not in db", function (done) {
