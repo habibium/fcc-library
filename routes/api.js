@@ -14,6 +14,7 @@ const {
   findBooks,
   findBookById,
   deleteAllBooks,
+  deleteBookById,
 } = require("../db");
 
 module.exports = function (app) {
@@ -80,8 +81,13 @@ module.exports = function (app) {
       }
     })
 
-    .delete(function (req, res) {
+    .delete(async function (req, res) {
       let bookid = req.params.id;
-      //if successful response will be 'delete successful'
+      try {
+        await deleteBookById(bookid);
+        return res.send("delete successful");
+      } catch (error) {
+        return res.send("no book exists");
+      }
     });
 };
