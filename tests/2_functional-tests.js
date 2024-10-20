@@ -119,7 +119,7 @@ suite("Functional Tests", function () {
         findBooks()
           .then((books) => {
             if (books.length > 0) {
-              const book = books[0];
+              const book = books[0].toObject();
               chai
                 .request(server)
                 .get(`/api/books/${book._id}`)
@@ -146,7 +146,37 @@ suite("Functional Tests", function () {
       "POST /api/books/[id] => add comment/expect book object with id",
       function () {
         test("Test POST /api/books/[id] with comment", function (done) {
-          //done();
+          findBooks()
+            .then((books) => {
+              const comment = "test comment";
+              if (books.length > 0) {
+                const book = books[0].toObject();
+                chai
+                  .request(server)
+                  .post(`/api/books/${book._id}`)
+                  .type("form")
+                  .send({
+                    comment,
+                  })
+                  .end((err, res) => {
+                    assert.equal(res.status, 200);
+                    assert.property(res.body, "title");
+                    assert.property(res.body, "_id");
+                    assert.property(res.body, "comments");
+                    assert.isArray(res.body.comments);
+                    assert.strictEqual(res.body._id, book._id);
+                    assert.strictEqual(res.body.title, book.title);
+                    assert.include(res.body.comments, comment);
+                    assert.strictEqual(
+                      res.body.commentcount,
+                      book.commentcount + 1
+                    );
+                    done();
+                  });
+              }
+              done();
+            })
+            .catch((e) => done(e));
         });
 
         test("Test POST /api/books/[id] without comment field", function (done) {
