@@ -120,6 +120,7 @@ suite("Functional Tests", function () {
           .then((books) => {
             if (books.length > 0) {
               const book = books[0].toObject();
+              book._id = book._id.toString();
               chai
                 .request(server)
                 .get(`/api/books/${book._id}`)
@@ -150,6 +151,7 @@ suite("Functional Tests", function () {
               const comment = "test comment";
               if (books.length > 0) {
                 const book = books[0].toObject();
+                book._id = book._id.toString();
                 chai
                   .request(server)
                   .post(`/api/books/${book._id}`)
@@ -182,6 +184,7 @@ suite("Functional Tests", function () {
             .then((books) => {
               if (books.length > 0) {
                 const book = books[0].toObject();
+                book._id = book._id.toString();
                 chai
                   .request(server)
                   .post(`/api/books/${book._id}`)
@@ -224,6 +227,7 @@ suite("Functional Tests", function () {
         findBooks().then((books) => {
           if (books.length > 0) {
             const book = books[0].toObject();
+            book._id = book._id.toString();
             chai
               .request(server)
               .delete(`/api/books/${book._id}`)
