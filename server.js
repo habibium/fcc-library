@@ -36,19 +36,48 @@ app.use(function (req, res, next) {
 });
 
 //Start our server and tests!
-const listener = app.listen(process.env.PORT || 3000, function () {
-  console.log("Your app is listening on port " + listener.address().port);
-  if (process.env.NODE_ENV === "test") {
-    console.log("Running Tests...");
-    setTimeout(function () {
-      try {
-        runner.run();
-      } catch (e) {
-        console.log("Tests are not valid:");
-        console.error(e);
-      }
-    }, 1500);
-  }
-});
+const listen = (port) =>
+  new Promise((resolve, reject) => {
+    const listener = app
+      .listen(port, () => resolve(listener))
+      .on("error", (e) => {
+        if (e.code === "EADDRINUSE") {
+          console.log(`Port ${port} is busy, trying ${port + 1}...`);
+          resolve(listen(port + 1));
+        }
+        reject(e);
+      });
+  });
+
+listen(+process.env.PORT || 3000)
+  .then((listener) => {
+    console.log("Your app is listening on port " + listener.address().port);
+    if (process.env.NODE_ENV === "test") {
+      console.log("Running Tests...");
+      setTimeout(function () {
+        try {
+          runner.run();
+        } catch (e) {
+          console.log("Tests are not valid:");
+          console.error(e);
+        }
+      }, 1500);
+    }
+  })
+  .catch(console.error);
+// const listener = app.listen(process.env.PORT || 3000, function () {
+//   console.log("Your app is listening on port " + listener.address().port);
+//   if (process.env.NODE_ENV === "test") {
+//     console.log("Running Tests...");
+//     setTimeout(function () {
+//       try {
+//         runner.run();
+//       } catch (e) {
+//         console.log("Tests are not valid:");
+//         console.error(e);
+//       }
+//     }, 1500);
+//   }
+// });
 
 module.exports = app; //for unit/functional testing
