@@ -8,6 +8,8 @@
 
 "use strict";
 
+const { createBook } = require("../db");
+
 module.exports = function (app) {
   app
     .route("/api/books")
@@ -16,9 +18,18 @@ module.exports = function (app) {
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
     })
 
-    .post(function (req, res) {
+    .post(async function (req, res) {
       let title = req.body.title;
       //response will contain new book object including atleast _id and title
+      if (!title) return res.send("missing required field title");
+
+      try {
+        const newBook = await createBook({ title });
+        return res.json(newBook);
+      } catch (error) {
+        console.log({ error });
+        return res.json({ error: "Error creating book" });
+      }
     })
 
     .delete(function (req, res) {
