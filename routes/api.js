@@ -13,6 +13,7 @@ const {
   insertCommentOnBook,
   findBooks,
   findBookById,
+  deleteAllBooks,
 } = require("../db");
 
 module.exports = function (app) {
@@ -23,7 +24,7 @@ module.exports = function (app) {
       //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
       try {
         const books = await findBooks();
-        res.json(books);
+        return res.json(books);
       } catch (error) {
         console.log({ error });
         return res.json({ error: "Error fetching books" });
@@ -44,8 +45,13 @@ module.exports = function (app) {
       }
     })
 
-    .delete(function (req, res) {
-      //if successful response will be 'complete delete successful'
+    .delete(async function (req, res) {
+      try {
+        await deleteAllBooks();
+        return res.send("complete delete successful");
+      } catch (error) {
+        return res.json({ error: "Error deleting books" });
+      }
     });
 
   app
