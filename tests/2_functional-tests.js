@@ -71,8 +71,8 @@ suite("Functional Tests", function () {
         test("Test POST /api/books with no title given", function (done) {
           chai
             .request(server)
-            .type("form")
             .post("/api/books")
+            .type("form")
             .send({ title: "" })
             .end((err, res) => {
               assert.equal(res.status, 200);
