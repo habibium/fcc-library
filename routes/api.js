@@ -51,6 +51,7 @@ module.exports = function (app) {
         await deleteAllBooks();
         return res.send("complete delete successful");
       } catch (error) {
+        console.error({ error });
         return res.json({ error: "Error deleting books" });
       }
     });
@@ -64,6 +65,7 @@ module.exports = function (app) {
         if (!book) throw Error;
         res.json(book);
       } catch (error) {
+        console.log({ error });
         res.send("no book exists");
       }
     })
@@ -77,6 +79,7 @@ module.exports = function (app) {
         const book = await insertCommentOnBook(bookId, comment);
         return res.json(book);
       } catch (error) {
+        console.log({ error });
         return res.send("no book exists");
       }
     })
@@ -84,9 +87,11 @@ module.exports = function (app) {
     .delete(async function (req, res) {
       let bookid = req.params.id;
       try {
-        await deleteBookById(bookid);
+        const deletedBook = await deleteBookById(bookid);
+        if (!deletedBook) throw Error;
         return res.send("delete successful");
       } catch (error) {
+        console.log({ error });
         return res.send("no book exists");
       }
     });
