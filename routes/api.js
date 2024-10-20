@@ -49,7 +49,7 @@ module.exports = function (app) {
       if (!comment) return res.send("missing required field comment");
       try {
         const book = await insertCommentOnBook(bookId, comment);
-        res.json(book);
+        return res.json(book);
       } catch (error) {
         return res.send("no book exists");
       }
