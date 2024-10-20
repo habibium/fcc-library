@@ -28,17 +28,17 @@ suite("Functional Tests", function () {
         assert.property(
           res.body[0],
           "commentcount",
-          "Books in array should contain commentcount",
+          "Books in array should contain commentcount"
         );
         assert.property(
           res.body[0],
           "title",
-          "Books in array should contain title",
+          "Books in array should contain title"
         );
         assert.property(
           res.body[0],
           "_id",
-          "Books in array should contain _id",
+          "Books in array should contain _id"
         );
         done();
       });
@@ -52,13 +52,25 @@ suite("Functional Tests", function () {
       "POST /api/books with title => create book object/expect book object",
       function () {
         test("Test POST /api/books with title", function (done) {
-          //done();
+          const title = "test";
+          chai
+            .request(server)
+            .post("/api/books")
+            .type("form")
+            .send({ title })
+            .end((err, res) => {
+              assert.equal(res.status, 200);
+              assert.property(res.body, "title");
+              assert.property(res.body, "_id");
+              assert.equal(res.body.title, title);
+              done();
+            });
         });
 
         test("Test POST /api/books with no title given", function (done) {
           //done();
         });
-      },
+      }
     );
 
     suite("GET /api/books => array of books", function () {
@@ -91,7 +103,7 @@ suite("Functional Tests", function () {
         test("Test POST /api/books/[id] with comment, id not in db", function (done) {
           //done();
         });
-      },
+      }
     );
 
     suite("DELETE /api/books/[id] => delete book object id", function () {
