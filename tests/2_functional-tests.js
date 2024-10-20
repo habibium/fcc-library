@@ -84,7 +84,20 @@ suite("Functional Tests", function () {
 
     suite("GET /api/books => array of books", function () {
       test("Test GET /api/books", function (done) {
-        //done();
+        chai
+          .request(server)
+          .get("/api/books")
+          .end((err, res) => {
+            assert.equal(res.status, 200);
+            assert.isArray(res.body);
+            if (res.body.length > 0) {
+              assert.property(res.body[0], "title");
+              assert.property(res.body[0], "_id");
+              assert.property(res.body[0], "commentcount");
+              assert.isNumber(res.body[0].commentcount);
+            }
+            done();
+          });
       });
     });
 
