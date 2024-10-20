@@ -14,6 +14,10 @@ const BookSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  commentcount: {
+    type: Number,
+    default: 0,
+  },
   comments: {
     type: [String],
     default: [],
@@ -26,8 +30,16 @@ const createBook = async (book) => await Book.create(book);
 
 const findBooks = async () => await Book.find({});
 
+const insertCommentOnBook = async (_id, comment) =>
+  await Book.findOneAndUpdate(
+    { _id },
+    { $inc: { commentcount: 1 }, $push: { comments: comment } },
+    { new: true }
+  );
+
 module.exports = {
   dbConnect,
   createBook,
   findBooks,
+  insertCommentOnBook,
 };
