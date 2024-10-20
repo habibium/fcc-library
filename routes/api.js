@@ -8,7 +8,12 @@
 
 "use strict";
 
-const { createBook, insertCommentOnBook, findBooks } = require("../db");
+const {
+  createBook,
+  insertCommentOnBook,
+  findBooks,
+  findBookById,
+} = require("../db");
 
 module.exports = function (app) {
   app
@@ -47,6 +52,13 @@ module.exports = function (app) {
     .route("/api/books/:id")
     .get(async function (req, res) {
       const bookId = req.params.id;
+      try {
+        const book = await findBookById(bookId);
+        if (!book) throw Error;
+        res.json(book);
+      } catch (error) {
+        res.send("no book exists");
+      }
     })
 
     .post(async function (req, res) {
