@@ -240,7 +240,15 @@ suite("Functional Tests", function () {
       });
 
       test("Test DELETE /api/books/[id] with  id not in db", function (done) {
-        //done();
+        const newId = crypto.randomUUID().toString();
+        chai
+          .request(server)
+          .delete(`/api/books/${newId}`)
+          .end((err, res) => {
+            assert.strictEqual(res.status, 200);
+            assert.strictEqual(res.text, "no book exists");
+            done();
+          });
       });
     });
   });
