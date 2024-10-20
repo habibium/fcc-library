@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "test": "mocha --timeout 500 --recursive --exit --ui tdd tests/"
+    "test": "mocha --timeout 180 --recursive --exit --ui tdd tests/"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
