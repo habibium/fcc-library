@@ -180,7 +180,26 @@ suite("Functional Tests", function () {
         });
 
         test("Test POST /api/books/[id] without comment field", function (done) {
-          //done();
+          findBooks()
+            .then((books) => {
+              if (books.length > 0) {
+                const book = books[0].toObject();
+                chai
+                  .request(server)
+                  .post(`/api/books/${book._id}`)
+                  .type("form")
+                  .send({})
+                  .end((err, res) => {
+                    assert.strictEqual(res.status, 200);
+                    assert.strictEqual(
+                      res.text,
+                      "missing required field comment"
+                    );
+                    done();
+                  });
+              }
+            })
+            .catch((e) => done(e));
         });
 
         test("Test POST /api/books/[id] with comment, id not in db", function (done) {
